@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bufio"
+	"bytes"
 	"context"
 	"crypto/rand"
 	"crypto/sha256"
@@ -57,7 +59,14 @@ func getOauth2Config(provider *oidc.Provider, redirectURL string, clientId strin
 
 func main() {
 	if len(os.Args) > 1 {
-		GetAPI()
+		var buf bytes.Buffer
+		writer := bufio.NewWriter(&buf)
+
+		GetAPI(writer)
+		writer.Flush()
+
+		os.Stdout.Write(buf.Bytes())
+		os.Exit(0)
 		return
 	}
 	godotenv.Load()

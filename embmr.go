@@ -44,7 +44,7 @@ type QueryRequestBody struct {
 	Query string `json:"query"`
 }
 
-func GetAPI() {
+func GetAPI(writer io.Writer) {
 
 	// apiURL := os.Getenv("API_URL")
 	jsonData := QueryRequestBody{
@@ -88,5 +88,9 @@ func GetAPI() {
 	if err != nil {
 		panic(err)
 	}
-	os.Stdout.Write(responseData)
+	_, err = writer.Write(responseData)
+	if err != nil {
+		panic(err)
+	}
+
 }
